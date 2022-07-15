@@ -1,5 +1,6 @@
 package com.example.employeemanager.model.employee;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,14 +11,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/employee")
 @CrossOrigin(origins = "http://localhost:4200/")
+@RequiredArgsConstructor
 public class EmployeeController {
 
     @Autowired
     private final EmployeeService employeeService;
-
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
 
     @GetMapping("/all")
     public ResponseEntity<List<Employee>> getAllEmployees() {
