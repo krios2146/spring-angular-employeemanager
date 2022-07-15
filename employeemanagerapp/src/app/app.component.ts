@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Employee } from './employee';
 import { EmployeeService } from './employee.service';
 
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit{
     );
   }
 
-  public openModal(employee: Employee, modal: string) {
+  public openModal(employee: Employee, modal: string): void {
     const container = document.getElementById('container');
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -46,5 +47,18 @@ export class AppComponent implements OnInit{
     }
     container?.appendChild(btn);
     btn.click();
+  }
+
+  public addEmployee(addForm: NgForm): void {
+    this.employeeService.addEmployee(addForm.value).subscribe(
+      (response: Employee) => {
+        console.log(response);
+        this.getEmployees();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+    document.getElementById('add-employee-form')?.click();
   }
 }
