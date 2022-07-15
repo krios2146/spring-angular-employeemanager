@@ -12,7 +12,8 @@ import { EmployeeService } from './employee.service';
 
 export class AppComponent implements OnInit{
   public employees: Employee[] | undefined;
-  public editEmployee: Employee | undefined;
+  public employeeToEdit: Employee | undefined;
+  public employeeToDelete: Employee | undefined;
 
   constructor(private employeeService: EmployeeService) { }
 
@@ -41,10 +42,11 @@ export class AppComponent implements OnInit{
       btn.setAttribute('data-target', '#addEmployeeModal');
     }
     if (modal === 'edit') {
-      this.editEmployee = employee;
+      this.employeeToEdit = employee;
       btn.setAttribute('data-target', '#updateEmployeeModal');
     }
     if (modal === 'delete') {
+      this.employeeToDelete = employee;
       btn.setAttribute('data-target', '#deleteEmployeeModal');
     }
     container?.appendChild(btn);
@@ -66,8 +68,21 @@ export class AppComponent implements OnInit{
   }
 
   public updateEmployee(editForm: NgForm): void {
-    this.employeeService.updateEmployee(editForm.value).subscribe(
+    var employeeFromEditForm = editForm.value;
+    this.employeeService.updateEmployee(employeeFromEditForm).subscribe(
       (response: Employee) => {
+        console.log(response);
+        this.getEmployees();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public deleteEmployee(employee: Employee): void {
+    this.employeeService.deleteEmployee(employee?.id).subscribe(
+      (response: void) => {
         console.log(response);
         this.getEmployees();
       },
