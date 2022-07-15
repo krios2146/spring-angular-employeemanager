@@ -12,6 +12,7 @@ import { EmployeeService } from './employee.service';
 
 export class AppComponent implements OnInit{
   public employees: Employee[] | undefined;
+  public editEmployee: Employee | undefined;
 
   constructor(private employeeService: EmployeeService) { }
 
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit{
       btn.setAttribute('data-target', '#addEmployeeModal');
     }
     if (modal === 'edit') {
+      this.editEmployee = employee;
       btn.setAttribute('data-target', '#updateEmployeeModal');
     }
     if (modal === 'delete') {
@@ -60,5 +62,18 @@ export class AppComponent implements OnInit{
       }
     )
     document.getElementById('add-employee-form')?.click();
+    addForm.reset();
+  }
+
+  public updateEmployee(editForm: NgForm): void {
+    this.employeeService.updateEmployee(editForm.value).subscribe(
+      (response: Employee) => {
+        console.log(response);
+        this.getEmployees();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
   }
 }
