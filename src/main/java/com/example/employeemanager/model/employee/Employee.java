@@ -1,6 +1,8 @@
 package com.example.employeemanager.model.employee;
 
 import lombok.*;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.persistence.*;
 import java.io.Serializable;
